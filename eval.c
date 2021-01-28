@@ -2229,6 +2229,15 @@ sexp sexp_make_primitive_env_op (sexp ctx, sexp self, sexp_sint_t n, sexp versio
 }
 
 char* sexp_find_module_file_raw (sexp ctx, const char *file) {
+#ifdef _EE
+  int len = strlen(file);
+  char *p = sexp_malloc(len+1);
+  for (int i = 0; i < len; i++) {
+    p[i] = toupper(file[i]);
+  }
+  p[len] = 0;
+  return p;
+#else
   sexp ls;
   char *dir, *path;
   sexp_uint_t slash, dirlen, filelen, len;
@@ -2261,6 +2270,7 @@ char* sexp_find_module_file_raw (sexp ctx, const char *file) {
   }
 
   return NULL;
+#endif
 }
 
 sexp sexp_find_module_file (sexp ctx, const char *file) {

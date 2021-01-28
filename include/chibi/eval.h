@@ -13,9 +13,15 @@ extern "C" {
 
 /************************* additional types ***************************/
 
+#ifdef _EE
+#define sexp_init_file "INIT_"
+#define sexp_meta_file "META_7.SCM"
+#define sexp_init_file_suffix ".SCM"
+#else
 #define sexp_init_file "init-"
-#define sexp_init_file_suffix ".scm"
 #define sexp_meta_file "meta-7.scm"
+#define sexp_init_file_suffix ".scm"
+#endif
 #define sexp_leap_seconds_file "leap.txt"
 
 enum sexp_core_form_names {
