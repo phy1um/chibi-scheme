@@ -202,7 +202,7 @@ sexp sexp_finalize_port (sexp ctx, sexp self, sexp_sint_t n, sexp port) {
   if (sexp_port_openp(port)) {
     sexp_port_openp(port) = 0;
     if (sexp_oportp(port)) sexp_flush_forced(ctx, port);
-#ifndef PLAN9
+#if !(defined PLAN9) && !(defined _EE)
     if (sexp_filenop(sexp_port_fd(port))
         && sexp_fileno_openp(sexp_port_fd(port))) {
       if (sexp_port_shutdownp(port)) {

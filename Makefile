@@ -97,7 +97,7 @@ include/chibi/install.h: Makefile
 	echo '#define sexp_release_name "'`cat RELEASE`'"' >> $@
 
 %.o: %.c $(BASE_INCLUDES)
-	$(CC) -c $(XCPPFLAGS) $(XCFLAGS) $(CLIBFLAGS) -o $@ $<
+	$(CC) -c $(XCPPFLAGS) $(EE_CFLAGS) $(EE_INCS) $(XCFLAGS) $(CLIBFLAGS) -o $@ $<
 
 gc-ulimit.o: gc.c $(BASE_INCLUDES)
 	$(CC) -c $(XCPPFLAGS) $(XCFLAGS) $(CLIBFLAGS) -DSEXP_USE_LIMITED_MALLOC -o $@ $<

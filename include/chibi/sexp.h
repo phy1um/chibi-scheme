@@ -33,16 +33,18 @@ extern "C" {
 #if SEXP_USE_DL
 #include <dlfcn.h>
 #endif
-#ifndef PLAN9
-#include <errno.h>
-#include <unistd.h>
-#define SEXP_USE_POLL_PORT 1
-#define sexp_poll_input(ctx, port) sexp_poll_port(ctx, port, 1)
-#define sexp_poll_output(ctx, port) sexp_poll_port(ctx, port, 0)
-#else
+#if defined(PLAN9) || defined(_EE)
 #define SEXP_USE_POLL_PORT 0
 #define sexp_poll_input(ctx, port) sleep(SEXP_POLL_SLEEP_TIME_MS)
 #define sexp_poll_output(ctx, port) sleep(SEXP_POLL_SLEEP_TIME_MS)
+#else
+#define SEXP_USE_POLL_PORT 1
+#define sexp_poll_input(ctx, port) sexp_poll_port(ctx, port, 1)
+#define sexp_poll_output(ctx, port) sexp_poll_port(ctx, port, 0)
+#endif
+#ifndef PLAN9
+#include <errno.h>
+#include <unistd.h>
 #endif
 #if SEXP_USE_GREEN_THREADS
 #include <sys/time.h>
@@ -88,7 +90,9 @@ typedef long long off_t;
 #include <string.h>
 #include <stdarg.h>
 #if !(defined _WIN32) || defined(__CYGWIN__)
+#ifndef _EE
 #include <sys/socket.h>
+#endif
 #endif
 #include <sys/stat.h>
 #include <sys/types.h>

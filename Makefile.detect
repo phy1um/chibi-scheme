@@ -108,10 +108,21 @@ ifeq ($(PLATFORM),cygwin)
 SO  = .dll
 EXE = .exe
 CC = gcc
-CLIBFLAGS =
+CLIBFLAGS = 
 CLINKFLAGS = -shared
 CPPFLAGS += -DSEXP_USE_STRING_STREAMS=0
 LIBCHIBI_FLAGS = -Wl,--out-implib,libchibi-scheme$(SO).a
+else
+ifeq ($(PLATFORM), ps2)
+SO = .erl
+EXE = .elf
+CC = mips64r5900el-ps2-elf-gcc
+XCFLAGS = -I$(PS2SDK)/ee/include -I$(PS2SDK)/common/include -D_EE -G0 $(EE_CFLAGS)
+CFLAGS = -DSEXP_USE_GREEN_THREADS=0 -D_EE -G0
+CLIBFLAGS = 
+CLINKFLAGS = -shared
+LIBCHIBI_FLAGS = -Wl
+SEXP_USE_DL = 0
 else
 SO  = .so
 EXE =
@@ -119,6 +130,7 @@ CLIBFLAGS = -fPIC
 CLINKFLAGS = -shared
 STATICFLAGS = -static -DSEXP_USE_DL=0
 LIBCHIBI_FLAGS = -Wl,-soname,libchibi-scheme$(SO).$(SOVERSION_MAJOR)
+endif
 endif
 endif
 endif
